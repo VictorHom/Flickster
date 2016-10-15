@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal"
+    >
+    <!--// using the  tools layout for viewing while creating the layout-->
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="75"
+        android:id="@+id/idMovieImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        tools:src="@mipmap/ic_launcher"
+        android:layout_alignBottom="@+id/tvOverview" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="25"
+        android:orientation="vertical"
+        android:paddingLeft="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="inferno"
+            android:id="@+id/tvTitle"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="122dp"
+            android:layout_marginEnd="122dp"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="After waking up in a hospital with amnesia, professor Robert Langdon and a doctor must race against time to foil a deadly global plot."
+            android:id="@+id/tvOverview"
+            android:layout_below="@+id/tvTitle"
+            android:layout_toEndOf="@+id/idMovieImage"
+            android:textSize="10sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
