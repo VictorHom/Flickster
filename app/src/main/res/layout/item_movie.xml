@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/movieSeperator">
     <!--// using the  tools layout for viewing while creating the layout-->
     <ImageView
         android:layout_width="wrap_content"
@@ -18,16 +19,32 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         tools:text="inferno"
         android:id="@+id/tvTitle"
+        android:paddingLeft="5dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/idMovieImage"
-        android:layout_toEndOf="@+id/idMovieImage" />
+        android:layout_toEndOf="@+id/idMovieImage"
+        android:textColor="@color/textWhite"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="After waking up in a hospital with amnesia, professor Robert Langdon and a doctor must race against time to foil a deadly global plot."
         android:id="@+id/tvOverview"
+        android:paddingLeft="5dp"
         android:layout_below="@+id/tvTitle"
         android:layout_toRightOf="@+id/idMovieImage"
-        android:layout_toEndOf="@+id/idMovieImage" />
+        android:layout_toEndOf="@+id/idMovieImage"
+        android:textColor="@color/textWhite"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:text=""
+        android:background="@drawable/separator_line"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/idMovieImage"
+        android:layout_toRightOf="@+id/tvOverview"
+        android:layout_alignParentLeft="true"/>
 </RelativeLayout>

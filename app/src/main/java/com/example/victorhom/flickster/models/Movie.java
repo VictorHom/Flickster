@@ -13,8 +13,10 @@ public class Movie {
     String posterPath;
     String originalTitle;
     String overview;
+    String originalOverview;
     String backdropPath;
     String movieId;
+    String voteAverage;
 
     public String getPosterPath() {
         return String.format("https://image.tmdb.org/t/p/w342/%s",posterPath);
@@ -32,12 +34,28 @@ public class Movie {
         return String.format("https://image.tmdb.org/t/p/w342/%s", backdropPath);
     }
 
+    public String getVoteAverage() {
+        return voteAverage;
+    }
+
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public String getOriginalOverview() {
+        return originalOverview;
+    }
+
     public Movie(JSONObject jsonObject) throws JSONException {
         this.posterPath = jsonObject.getString("poster_path");
         this.originalTitle = jsonObject.getString("original_title");
-        this.overview = jsonObject.getString("overview");
+        String overviewToTruncate = jsonObject.getString("overview");
+        // shortening the overview if it's too long
+        this.overview = overviewToTruncate.substring(0, Math.min(overviewToTruncate.length(), 300));
+        this.originalOverview = overviewToTruncate;
         this.backdropPath = jsonObject.getString("backdrop_path");
         this.movieId = jsonObject.getString("id");
+        this.voteAverage = jsonObject.getString("vote_average");
     }
 
     public static ArrayList<Movie> fromJSONArray(JSONArray array) {

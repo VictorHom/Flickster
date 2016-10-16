@@ -1,8 +1,11 @@
 package com.example.victorhom.flickster;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.victorhom.flickster.Adapter.MoviesArrayAdapter;
@@ -32,6 +35,12 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
+        // discouraged to have icon in Material design ¯\_(ツ)_/¯
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.moviews_actionbar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("");
+
         // look up the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
@@ -58,30 +67,26 @@ public class MovieActivity extends AppCompatActivity {
         // instantiate movie adapter
         movieAdapter = new MoviesArrayAdapter(this, movies);
         lvItems.setAdapter(movieAdapter);
-        String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
         client = new AsyncHttpClient();
         populateMoviesOnScreen();
 
-    }
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MovieActivity.this, MovieInformationActivity.class);
+                Movie selectedMovie = movieAdapter.getItem(position);
+                // send data to the movie information activity
+                // sending the additional data for quick population
+                // figure this would be faster than the network request for extra data
+                intent.putExtra("id", selectedMovie.getMovieId().toString());
+                intent.putExtra("backdrop_path", selectedMovie.getBackdropPath().toString());
+                intent.putExtra("votes", selectedMovie.getVoteAverage().toString());
+                intent.putExtra("overview", selectedMovie.getOriginalOverview().toString());
+                intent.putExtra("title", selectedMovie.getOriginalTitle().toString());
+                startActivity(intent);
+            }
+        });
 
-    public void fetchTimelineAsync(int page) {
-        // Send the network request to fetch the updated data
-        // `client` here is an instance of Android Async HTTP
-
-//        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
-//            public void onSuccess(JSONArray json) {
-//                // Remember to CLEAR OUT old items before appending in the new ones
-//                movieAdapter.clear();
-//                // ...the data has come back, add new items to your adapter...
-//                //movieAdapter.addAll(...);
-//                // Now we call setRefreshing(false) to signal refresh has finished
-//                swipeContainer.setRefreshing(false);
-//            }
-//
-//            public void onFailure(Throwable e) {
-//                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
-//            }
-//        });
     }
 
     private void populateMoviesOnScreen() {

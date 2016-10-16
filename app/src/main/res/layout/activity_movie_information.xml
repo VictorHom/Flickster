@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/movieGray"
+    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.victorhom.flickster.MovieInformationActivity"
+    android:background="@color/movieGray">
+
+    <!--<com.google.android.youtube.player.YouTubePlayerView-->
+        <!--android:id="@+id/player"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/>-->
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:text="inferno"
+        android:id="@+id/movieTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/textWhite"/>
+    <fragment
+        android:id="@+id/youtubeFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.youtube.player.YouTubePlayerFragment"
+        android:layout_below="@+id/movieTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp">
+    </fragment>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text=""
+        android:id="@+id/movieVotes"
+        android:layout_below="@+id/youtubeFragment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@color/textWhite"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="After waking up in a hospital with amnesia, professor Robert Langdon and a doctor must race against time to foil a deadly global plot."
+        android:id="@+id/movieOverview"
+        android:textColor="@color/textWhite"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/genres"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/genres"
+        android:textColor="@color/textWhite"
+        android:layout_below="@+id/movieVotes"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/duration"
+        android:textColor="@color/textWhite"
+        android:layout_alignTop="@+id/movieVotes"
+        android:layout_alignRight="@+id/youtubeFragment"
+        android:layout_alignEnd="@+id/youtubeFragment" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:text=""
+        android:background="@drawable/separator_line"
+        android:id="@+id/titleSeparator"
+        android:layout_below="@+id/movieTitle"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:text=""
+        android:background="@drawable/separator_line"
+        android:id="@+id/overviewTopSeparator"
+        android:layout_below="@+id/genres"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:text=""
+        android:background="@drawable/separator_line"
+        android:id="@+id/overviewBottomSeparator"
+        android:layout_below="@+id/movieOverview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
+</ScrollView>

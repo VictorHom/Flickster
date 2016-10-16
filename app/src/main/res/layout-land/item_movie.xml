@@ -33,7 +33,9 @@
             android:layout_alignParentEnd="true"
             android:layout_marginRight="122dp"
             android:layout_marginEnd="122dp"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            android:textColor="@color/textWhite"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,6 +45,7 @@
             android:layout_below="@+id/tvTitle"
             android:layout_toEndOf="@+id/idMovieImage"
             android:textSize="10sp"
+            android:textColor="@color/textWhite"
             />
 
     </LinearLayout>

@@ -6,6 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarStyle">@style/MoViewsActionBar</item>
     </style>
+
+    <!-- Tweaks to fit the MoViews theme -->
+    <style name="MoViewsActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/playButtonBlue</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/playButtonBlue</item>
+    </style>
+
 
 </resources>
