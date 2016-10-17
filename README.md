@@ -35,8 +35,9 @@ The following **bonus** features are implemented:
 The following **additional** features are implemented:
 
 * [X] List anything else that you can get done to improve the app functionality!
-[X] When watch the video trailers, you might change orientation. While changing orientation, the video will retain where it was left off before orientation change.
-[X] Added a cute youtube video for the movies where there are no immediate trailers
+* [X] When watch the video trailers, you might change orientation. While changing orientation, the video will retain where it was left off before orientation change.
+* [X] Added a cute youtube video for the movies where there are no immediate trailers
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
