@@ -31,6 +31,11 @@ public class MovieInformationActivity extends AppCompatActivity {
     YouTubePlayerFragment youtubeFragment;
     YouTubePlayer player;
     int currentVideoTime;
+    TextView tvTitle;
+    TextView tvVote;
+    TextView tvOverview;
+    TextView tvGenres;
+    TextView tvDuration;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,11 +61,7 @@ public class MovieInformationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_information);
 
-        // discouraged to have icon in Material design ¯\_(ツ)_/¯
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.moviews_actionbar);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("");
+        setActionBarStyle();
 
         // movie data passed in from onclick in the movie activity
         Intent movieIntent = getIntent();
@@ -70,9 +71,12 @@ public class MovieInformationActivity extends AppCompatActivity {
         overview = movieIntent.getStringExtra("overview");
         title = movieIntent.getStringExtra("title");
 
-        TextView tvTitle = (TextView) findViewById(R.id.movieTitle);
-        TextView tvVote = (TextView) findViewById(R.id.movieVotes);
-        TextView tvOverview = (TextView) findViewById(R.id.movieOverview);
+        tvTitle = (TextView) findViewById(R.id.movieTitle);
+        tvVote = (TextView) findViewById(R.id.movieVotes);
+        tvOverview = (TextView) findViewById(R.id.movieOverview);
+        // set data for tvGenres and tvDuration in populateMovieDataOnScreen method
+        tvGenres = (TextView) findViewById(R.id.genres);
+        tvDuration = (TextView) findViewById(R.id.duration);
 
         tvTitle.setText(title.toString());
         tvVote.setText("Average Vote: " + votes.toString() + "/10");
@@ -91,7 +95,6 @@ public class MovieInformationActivity extends AppCompatActivity {
 
         String youtubeUrl = "https://api.themoviedb.org/3/movie/" + this.id + "/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
-        String movieReviewUrl = "https://api.themoviedb.org/3/movie/"+ this.id +"/reviews?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
         final String peopleVotes = this.votes;
 
         client.get(youtubeUrl, new JsonHttpResponseHandler(){
@@ -116,37 +119,28 @@ public class MovieInformationActivity extends AppCompatActivity {
                                                             final YouTubePlayer youTubePlayer, boolean b) {
 
                             player = youTubePlayer;
+                            int orientation;
                             // auto play if the votes for the movie is > 5
                             if (Float.parseFloat(peopleVotes) > 5) {
                                 youTubePlayer.loadVideo(youtubeKey);
-                                // want to set fullscreen, but issue:  when leave fullscreen
-                                // activity is remade, and I end up back in fullscreen
-                                // don't know how to listen on the minimize screen button
-                                // to send an savedInstance
-                                //youTubePlayer.setFullscreen(true);
                             } else {
                                 youTubePlayer.cueVideo(youtubeKey);
                             }
 
-                            int orientation = getApplicationContext().getResources().getConfiguration().orientation;
+                            orientation = getApplicationContext().getResources().getConfiguration().orientation;
                             if (orientation == Configuration.ORIENTATION_LANDSCAPE ) {
                                 youTubePlayer.setFullscreen(true);
                             }
 
                             youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
                                 @Override
-                                public void onLoading() {
-                                }
+                                public void onLoading() {}
 
                                 @Override
-                                public void onLoaded(String s) {
-
-                                }
+                                public void onLoaded(String s) {}
 
                                 @Override
-                                public void onAdStarted() {
-
-                                }
+                                public void onAdStarted() {}
 
                                 @Override
                                 public void onVideoStarted() {
@@ -154,14 +148,10 @@ public class MovieInformationActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onVideoEnded() {
-
-                                }
+                                public void onVideoEnded() {}
 
                                 @Override
-                                public void onError(YouTubePlayer.ErrorReason errorReason) {
-
-                                }
+                                public void onError(YouTubePlayer.ErrorReason errorReason) {}
                             });
 
                         }
@@ -195,6 +185,10 @@ public class MovieInformationActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 JSONArray genres = null;
                 int runtime = 0;
+                String hour;
+                String minute;
+                String movieLength;
+
                 try {
                     genres = response.getJSONArray("genres");
                     runtime = response.getInt("runtime");
@@ -208,12 +202,10 @@ public class MovieInformationActivity extends AppCompatActivity {
                         }
                     }
 
-                    String hour = String.valueOf(runtime / 60);
-                    String minute = String.valueOf(runtime % 60);
-                    String movieLength = hour + " hrs " + minute + " mins";
+                    hour = String.valueOf(runtime / 60);
+                    minute = String.valueOf(runtime % 60);
+                    movieLength = hour + " hrs " + minute + " mins";
 
-                    TextView tvGenres = (TextView) findViewById(R.id.genres);
-                    TextView tvDuration = (TextView) findViewById(R.id.duration);
                     tvGenres.setText(formatGenres);
                     tvDuration.setText(movieLength);
 
@@ -229,6 +221,9 @@ public class MovieInformationActivity extends AppCompatActivity {
         });
     }
 
+    // String movieReviewUrl = "https://api.themoviedb.org/3/movie/"+ this.id +"/reviews?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+    // add on reviews to this activity
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -239,5 +234,13 @@ public class MovieInformationActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         currentVideoTime = savedInstanceState.getInt("videoTime");
+    }
+
+    private void setActionBarStyle() {
+        // discouraged to have icon in Material design ¯\_(ツ)_/¯
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.moviews_actionbar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("");
     }
 }

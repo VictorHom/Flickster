@@ -35,32 +35,11 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        // discouraged to have icon in Material design ¯\_(ツ)_/¯
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.moviews_actionbar);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("");
+        setActionBarStyle();
 
         // look up the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // make sure you call swipeContainer.setRefreshing(false);
-                // once the network request has completed successfully
-                movieAdapter.clear();
-                populateMoviesOnScreen();
-                swipeContainer.setRefreshing(false);
-            }
-        });
-
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
+        setSwipeContainerLoader();
 
         movies = new ArrayList<>();
         lvItems = (ListView) findViewById(R.id.lvMovies);
@@ -70,22 +49,7 @@ public class MovieActivity extends AppCompatActivity {
         client = new AsyncHttpClient();
         populateMoviesOnScreen();
 
-        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MovieActivity.this, MovieInformationActivity.class);
-                Movie selectedMovie = movieAdapter.getItem(position);
-                // send data to the movie information activity
-                // sending the additional data for quick population
-                // figure this would be faster than the network request for extra data
-                intent.putExtra("id", selectedMovie.getMovieId().toString());
-                intent.putExtra("backdrop_path", selectedMovie.getBackdropPath().toString());
-                intent.putExtra("votes", selectedMovie.getVoteAverage().toString());
-                intent.putExtra("overview", selectedMovie.getOriginalOverview().toString());
-                intent.putExtra("title", selectedMovie.getOriginalTitle().toString());
-                startActivity(intent);
-            }
-        });
+        setLVClickHandler();
 
     }
 
@@ -109,6 +73,52 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+    private void setActionBarStyle() {
+        // discouraged to have icon in Material design ¯\_(ツ)_/¯
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.moviews_actionbar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setTitle("");
+    }
+
+    private void setSwipeContainerLoader() {
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // make sure you call swipeContainer.setRefreshing(false);
+                // once the network request has completed successfully
+                movieAdapter.clear();
+                populateMoviesOnScreen();
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    private void setLVClickHandler() {
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MovieActivity.this, MovieInformationActivity.class);
+                Movie selectedMovie = movieAdapter.getItem(position);
+                // send data to the movie information activity
+                // sending the additional data for quick population
+                // figure this would be faster than the network request for extra data
+                intent.putExtra("id", selectedMovie.getMovieId().toString());
+                intent.putExtra("backdrop_path", selectedMovie.getBackdropPath().toString());
+                intent.putExtra("votes", selectedMovie.getVoteAverage().toString());
+                intent.putExtra("overview", selectedMovie.getOriginalOverview().toString());
+                intent.putExtra("title", selectedMovie.getOriginalTitle().toString());
+                startActivity(intent);
             }
         });
     }

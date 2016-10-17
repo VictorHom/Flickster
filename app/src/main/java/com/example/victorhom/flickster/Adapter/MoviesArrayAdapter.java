@@ -34,7 +34,7 @@ public class MoviesArrayAdapter extends ArrayAdapter<Movie> {
     }
 
     // NOTE: not good that I'm cutting it off into 2 decisions
-    // it doesn't make it easy for future types for heterogenous listviewss
+    // doesn't make it easy for future types for heterogenous listviewss
     @Override
     public int getItemViewType(int position) {
         if (Float.parseFloat(getItem(position).getVoteAverage()) > 5) {
@@ -56,8 +56,8 @@ public class MoviesArrayAdapter extends ArrayAdapter<Movie> {
         // Get data item for this position
         Movie movie = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache sotred in tag
-
+        ViewHolder viewHolder; // view lookup cache sorted in tag
+        // The viewHolder is used here to speed up ref lookups to the view
         int type = getItemViewType(position);
         if (convertView == null) {
             // If there's no view to re-use, inflate a brand new view for row
@@ -96,15 +96,21 @@ public class MoviesArrayAdapter extends ArrayAdapter<Movie> {
 
 
         // there isn't a built in way of loading images, so we are using Picasso
+        // loading poster in portrait and backdrop in landscape
         int orientation = getContext().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT && type == 0) {
-            Picasso.with(getContext()).load(movie.getPosterPath()).transform(new RoundedCornersTransformation(10, 10)).placeholder(R.drawable.play_icon_poster).error(R.drawable.play_icon_poster).into(viewHolder.ivMovieImage);
+            Picasso.with(getContext()).load(movie.getPosterPath())
+                    .transform(new RoundedCornersTransformation(10, 10))
+                    .placeholder(R.drawable.play_icon_poster)
+                    .error(R.drawable.play_icon_poster)
+                    .into(viewHolder.ivMovieImage);
         } else {
-            Picasso.with(getContext()).load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(10, 10)).placeholder(R.drawable.play_icon_backdrop).error(R.drawable.play_icon_backdrop).into(viewHolder.ivMovieImage);
+            Picasso.with(getContext()).load(movie.getBackdropPath())
+                    .transform(new RoundedCornersTransformation(10, 10))
+                    .placeholder(R.drawable.play_icon_backdrop)
+                    .error(R.drawable.play_icon_backdrop)
+                    .into(viewHolder.ivMovieImage);
         }
-
-
-
 
         //return the view
         return convertView;
