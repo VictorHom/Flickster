@@ -42,10 +42,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.giphy.com/l0MYsvLBVTx7rpjwI.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.giphy.com/3o6Zt2bWkesWcMh9Xq.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Link to Gif since file is big
-http://giphy.com/gifs/moviews-l0MYsvLBVTx7rpjwI
+http://gph.is/2eH3Ldp
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
