@@ -1,11 +1,11 @@
 package com.example.victorhom.flickster;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -32,10 +32,10 @@ public class MovieInformationActivity extends AppCompatActivity {
     YouTubePlayer player;
     int currentVideoTime;
     TextView tvTitle;
-    TextView tvVote;
     TextView tvOverview;
     TextView tvGenres;
     TextView tvDuration;
+    RatingBar rbVote;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,15 +72,15 @@ public class MovieInformationActivity extends AppCompatActivity {
         title = movieIntent.getStringExtra("title");
 
         tvTitle = (TextView) findViewById(R.id.movieTitle);
-        tvVote = (TextView) findViewById(R.id.movieVotes);
         tvOverview = (TextView) findViewById(R.id.movieOverview);
+        rbVote = (RatingBar) findViewById(R.id.ratingBar);
         // set data for tvGenres and tvDuration in populateMovieDataOnScreen method
         tvGenres = (TextView) findViewById(R.id.genres);
         tvDuration = (TextView) findViewById(R.id.duration);
 
         tvTitle.setText(title.toString());
-        tvVote.setText("Average Vote: " + votes.toString() + "/10");
         tvOverview.setText(overview.toString());
+        rbVote.setRating(Float.parseFloat(votes));
 
         client = new AsyncHttpClient();
 
@@ -127,10 +127,10 @@ public class MovieInformationActivity extends AppCompatActivity {
                                 youTubePlayer.cueVideo(youtubeKey);
                             }
 
-                            orientation = getApplicationContext().getResources().getConfiguration().orientation;
-                            if (orientation == Configuration.ORIENTATION_LANDSCAPE ) {
-                                youTubePlayer.setFullscreen(true);
-                            }
+//                            orientation = getApplicationContext().getResources().getConfiguration().orientation;
+//                            if (orientation == Configuration.ORIENTATION_LANDSCAPE ) {
+//                                youTubePlayer.setFullscreen(true);
+//                            }
 
                             youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
                                 @Override

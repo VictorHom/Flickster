@@ -43,15 +43,27 @@
         android:layout_marginBottom="30dp">
     </fragment>
 
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:text=""-->
+        <!--android:id="@+id/movieVotes"-->
+        <!--android:layout_below="@+id/youtubeFragment"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:textColor="@color/textWhite"/>-->
+
+    <RatingBar
+        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text=""
-        android:id="@+id/movieVotes"
+        style="?android:attr/ratingBarStyleSmall"
+        android:rating="0"
+        android:numStars="10"
+        android:isIndicator="true"
         android:layout_below="@+id/youtubeFragment"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/textWhite"/>
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +83,7 @@
         android:text=""
         android:id="@+id/genres"
         android:textColor="@color/textWhite"
-        android:layout_below="@+id/movieVotes"
+        android:layout_below="@+id/ratingBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
@@ -83,7 +95,7 @@
         android:text=""
         android:id="@+id/duration"
         android:textColor="@color/textWhite"
-        android:layout_alignTop="@+id/movieVotes"
+        android:layout_alignTop="@+id/ratingBar"
         android:layout_alignRight="@+id/youtubeFragment"
         android:layout_alignEnd="@+id/youtubeFragment" />
 

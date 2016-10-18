@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/movieGray"
-    >
+<!--<ScrollView-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@color/movieGray"-->
+    <!--&gt;-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
@@ -37,21 +37,23 @@
         android:layout_height="fill_parent"
         android:name="com.google.android.youtube.player.YouTubePlayerFragment"
         android:layout_below="@+id/movieTitle"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
     </fragment>
 
-    <TextView
+    <RatingBar
+        android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text=""
-        android:id="@+id/movieVotes"
+        style="?android:attr/ratingBarStyleSmall"
+        android:rating="0"
+        android:numStars="10"
+        android:layout_marginTop="10dp"
+        android:isIndicator="true"
         android:layout_below="@+id/youtubeFragment"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@color/textWhite"/>
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -71,7 +73,7 @@
         android:text=""
         android:id="@+id/genres"
         android:textColor="@color/textWhite"
-        android:layout_below="@+id/movieVotes"
+        android:layout_below="@+id/ratingBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="5dp"
@@ -83,18 +85,18 @@
         android:text=""
         android:id="@+id/duration"
         android:textColor="@color/textWhite"
-        android:layout_alignTop="@+id/movieVotes"
+        android:layout_alignTop="@+id/ratingBar"
         android:layout_alignRight="@+id/youtubeFragment"
         android:layout_alignEnd="@+id/youtubeFragment" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:text=""
-        android:background="@drawable/separator_line"
-        android:id="@+id/titleSeparator"
-        android:layout_below="@+id/movieTitle"
-        android:layout_centerHorizontal="true" />
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:text=""-->
+        <!--android:background="@drawable/separator_line"-->
+        <!--android:id="@+id/titleSeparator"-->
+        <!--android:layout_below="@+id/movieTitle"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
     <TextView
         android:layout_width="fill_parent"
@@ -117,4 +119,5 @@
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>
-</ScrollView>
+<!--</ScrollView>-->
+<!--ScrollView was messing with autoplay in landscape for youtubeplayer :( -->
