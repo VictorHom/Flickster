@@ -11,18 +11,22 @@ import android.widget.TextView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MovieInformationActivity extends AppCompatActivity {
 
-    AsyncHttpClient client;
+    OkHttpClient okClient;
     String id;
     String backdrop_path;
     String votes;
@@ -82,7 +86,7 @@ public class MovieInformationActivity extends AppCompatActivity {
         tvOverview.setText(overview.toString());
         rbVote.setRating(Float.parseFloat(votes));
 
-        client = new AsyncHttpClient();
+        okClient = new OkHttpClient();
 
         youtubeFragment = (YouTubePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.youtubeFragment);
@@ -96,14 +100,22 @@ public class MovieInformationActivity extends AppCompatActivity {
         String youtubeUrl = "https://api.themoviedb.org/3/movie/" + this.id + "/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
         final String peopleVotes = this.votes;
+        Request request = new Request.Builder().url(youtubeUrl).build();
 
-        client.get(youtubeUrl, new JsonHttpResponseHandler(){
+        okClient.newCall(request).enqueue(new Callback() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 JSONArray movieJSONResults = null;
                 try {
-                    movieJSONResults = response.getJSONArray("results");
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    movieJSONResults = json.getJSONArray("results");
                     final String youtubeKey;
                     if (movieJSONResults.length() > 0){
                         JSONObject youtubeObject = (JSONObject) movieJSONResults.get(0);
@@ -112,86 +124,92 @@ public class MovieInformationActivity extends AppCompatActivity {
                         // default if no key https://www.youtube.com/watch?v=BIPa_UpVrWk
                         youtubeKey = "BIPa_UpVrWk";
                     }
-                    youtubeFragment.initialize("AIzaSyB5VsMiIkPGnaOxU4lGxPeJBVyJz9nTyWEs",
-                        new YouTubePlayer.OnInitializedListener() {
-                        @Override
-                        public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                            final YouTubePlayer youTubePlayer, boolean b) {
-
-                            player = youTubePlayer;
-                            int orientation;
-                            // auto play if the votes for the movie is > 5
-                            if (Float.parseFloat(peopleVotes) > 5) {
-                                youTubePlayer.loadVideo(youtubeKey);
-                            } else {
-                                youTubePlayer.cueVideo(youtubeKey);
-                            }
-
-//                            orientation = getApplicationContext().getResources().getConfiguration().orientation;
-//                            if (orientation == Configuration.ORIENTATION_LANDSCAPE ) {
-//                                youTubePlayer.setFullscreen(true);
-//                            }
-
-                            youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
-                                @Override
-                                public void onLoading() {}
-
-                                @Override
-                                public void onLoaded(String s) {}
-
-                                @Override
-                                public void onAdStarted() {}
-
-                                @Override
-                                public void onVideoStarted() {
-                                    youTubePlayer.seekRelativeMillis(currentVideoTime);
-                                }
-
-                                @Override
-                                public void onVideoEnded() {}
-
-                                @Override
-                                public void onError(YouTubePlayer.ErrorReason errorReason) {}
-                            });
-
-                        }
+                    MovieInformationActivity.this.runOnUiThread(new Runnable() {
 
                         @Override
-                        public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                            YouTubeInitializationResult youTubeInitializationResult) {
+                        public void run() {
+                            youtubeFragment.initialize("AIzaSyB5VsMiIkPGnaOxU4lGxPeJBVyJz9nTyWEs",
+                                    new YouTubePlayer.OnInitializedListener() {
+                                        @Override
+                                        public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                                            final YouTubePlayer youTubePlayer, boolean b) {
 
+                                            player = youTubePlayer;
+                                            int orientation;
+                                            // auto play if the votes for the movie is > 5
+                                            if (Float.parseFloat(peopleVotes) > 5) {
+                                                youTubePlayer.loadVideo(youtubeKey);
+                                            } else {
+                                                youTubePlayer.cueVideo(youtubeKey);
+                                            }
+
+                                            youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
+                                                @Override
+                                                public void onLoading() {}
+
+                                                @Override
+                                                public void onLoaded(String s) {}
+
+                                                @Override
+                                                public void onAdStarted() {}
+
+                                                @Override
+                                                public void onVideoStarted() {
+                                                    youTubePlayer.seekRelativeMillis(currentVideoTime);
+                                                }
+
+                                                @Override
+                                                public void onVideoEnded() {}
+
+                                                @Override
+                                                public void onError(YouTubePlayer.ErrorReason errorReason) {}
+                                            });
+
+                                        }
+
+                                        @Override
+                                        public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                                            YouTubeInitializationResult youTubeInitializationResult) {
+
+                                        }
+                                    });
                         }
                     });
+
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
         });
+
 
 
     }
 
     private void populateMovieDataOnScreen(){
         String movieInformationUrl = "https://api.themoviedb.org/3/movie/" + this.id +"?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
-        client.get(movieInformationUrl, new JsonHttpResponseHandler(){
+        Request request = new Request.Builder().url(movieInformationUrl).build();
+
+        okClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
                 JSONArray genres = null;
                 int runtime = 0;
                 String hour;
                 String minute;
-                String movieLength;
 
                 try {
-                    genres = response.getJSONArray("genres");
-                    runtime = response.getInt("runtime");
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    genres = json.getJSONArray("genres");
+                    runtime = json.getInt("runtime");
 
                     StringBuilder formatGenres = new StringBuilder();
                     for (int i = 0; i < genres.length(); i++) {
@@ -204,19 +222,21 @@ public class MovieInformationActivity extends AppCompatActivity {
 
                     hour = String.valueOf(runtime / 60);
                     minute = String.valueOf(runtime % 60);
-                    movieLength = hour + " hrs " + minute + " mins";
+                    final String movieLength= hour + " hrs " + minute + " mins";
+                    final String fGenres = formatGenres.toString();
+                    MovieInformationActivity.this.runOnUiThread(new Runnable() {
 
-                    tvGenres.setText(formatGenres);
-                    tvDuration.setText(movieLength);
+                        @Override
+                        public void run() {
+                            tvGenres.setText(fGenres);
+                            tvDuration.setText(movieLength);
+                        }
+                    });
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
     }

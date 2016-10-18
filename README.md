@@ -31,7 +31,7 @@ The following **bonus** features are implemented:
     * [X] Less popular videos rely on the detail page should show ratings and a YouTube preview.
 * [ ] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce boilerplate code.
 * [X] Apply rounded corners for the poster or background images using [Picasso transformations](https://guides.codepath.com/android/Displaying-Images-with-the-Picasso-Library#other-transformations)
-* [ ] Replaced android-async-http network client with the popular [OkHttp](http://guides.codepath.com/android/Using-OkHttp) or [Volley](http://guides.codepath.com/android/Networking-with-the-Volley-Library) networking libraries.
+* [X] Replaced android-async-http network client with the popular [OkHttp](http://guides.codepath.com/android/Using-OkHttp) or [Volley](http://guides.codepath.com/android/Networking-with-the-Volley-Library) networking libraries.
 
 The following **additional** features are implemented:
 
@@ -43,10 +43,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.giphy.com/3o6Zt2bWkesWcMh9Xq.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/gEJBlx9.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Link to Gif since file is big
-http://gph.is/2eH3Ldp
+http://imgur.com/gEJBlx9
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -58,6 +58,7 @@ Describe any challenges encountered while building the app.
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+- [OkHttp](https://github.com/square/okhttp) - An HTTP & HTTP/2 client for Android and Java applications.
 
 ## License
 

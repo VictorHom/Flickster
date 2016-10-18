@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import com.example.victorhom.flickster.R;
 import com.example.victorhom.flickster.models.Movie;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by victorhom on 10/15/16.
@@ -52,6 +54,9 @@ public class MoviesArrayAdapter extends ArrayAdapter<Movie> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        // Use OkHttpClient singleton
+        OkHttpClient client = new OkHttpClient();
+        Picasso picasso = new Picasso.Builder(getContext()).downloader(new OkHttp3Downloader(client)).build();
 
         // Get data item for this position
         Movie movie = getItem(position);

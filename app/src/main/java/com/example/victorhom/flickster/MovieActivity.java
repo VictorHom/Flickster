@@ -2,6 +2,7 @@ package com.example.victorhom.flickster;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,16 +11,19 @@ import android.widget.ListView;
 
 import com.example.victorhom.flickster.Adapter.MoviesArrayAdapter;
 import com.example.victorhom.flickster.models.Movie;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -28,7 +32,7 @@ public class MovieActivity extends AppCompatActivity {
     ArrayList<Movie> movies;
     MoviesArrayAdapter movieAdapter;
     ListView lvItems;
-    AsyncHttpClient client;
+    OkHttpClient okClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class MovieActivity extends AppCompatActivity {
         // instantiate movie adapter
         movieAdapter = new MoviesArrayAdapter(this, movies);
         lvItems.setAdapter(movieAdapter);
-        client = new AsyncHttpClient();
+        okClient = new OkHttpClient();
         populateMoviesOnScreen();
 
         setLVClickHandler();
@@ -55,24 +59,38 @@ public class MovieActivity extends AppCompatActivity {
 
     private void populateMoviesOnScreen() {
         String url = "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
-        client.get(url, new JsonHttpResponseHandler(){
+        Request request = new Request.Builder().url(url).build();
+        okClient.newCall(request).enqueue(new Callback() {
+            Handler mainHandler = new Handler(getApplicationContext().getMainLooper());
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                JSONArray moviesJSONResults = null;
-                try {
-                    moviesJSONResults = response.getJSONArray("results");
-                    movies.addAll(Movie.fromJSONArray(moviesJSONResults));
-                    movieAdapter.notifyDataSetChanged();
-                    //Log.d("movies", movies.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onFailure(Call call, IOException e) {
 
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
+            public void onResponse(Call call, Response response) throws IOException {
+
+
+
+                //final JSONArray moviesJSONResults = null;
+                try {
+                    String responseData = response.body().string();
+                    JSONObject json = new JSONObject(responseData);
+                    final JSONArray moviesJSONResults = json.getJSONArray("results");
+                    //moviesJSONResults = response.getJSONArray("results");
+                    MovieActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            movies.addAll(Movie.fromJSONArray(moviesJSONResults));
+                            movieAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+
+                    //Log.d("movies", movies.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
