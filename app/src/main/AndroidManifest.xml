@@ -11,14 +11,14 @@
         android:logo="@drawable/moviews_actionbar"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MovieActivity">
+        <activity android:name=".Activity.MovieActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieInformationActivity"></activity>
+        <activity android:name=".Activity.MovieInformationActivity"></activity>
     </application>
 
 </manifest>

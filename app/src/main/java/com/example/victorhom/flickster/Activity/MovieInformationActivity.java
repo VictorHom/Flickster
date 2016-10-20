@@ -1,4 +1,4 @@
-package com.example.victorhom.flickster;
+package com.example.victorhom.flickster.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.victorhom.flickster.R;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
@@ -40,6 +41,7 @@ public class MovieInformationActivity extends AppCompatActivity {
     TextView tvGenres;
     TextView tvDuration;
     RatingBar rbVote;
+    Intent movieIntent;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,23 +70,10 @@ public class MovieInformationActivity extends AppCompatActivity {
         setActionBarStyle();
 
         // movie data passed in from onclick in the movie activity
-        Intent movieIntent = getIntent();
-        id = movieIntent.getStringExtra("id");
-        backdrop_path = movieIntent.getStringExtra("backdrop_path");
-        votes = movieIntent.getStringExtra("votes");
-        overview = movieIntent.getStringExtra("overview");
-        title = movieIntent.getStringExtra("title");
-
-        tvTitle = (TextView) findViewById(R.id.movieTitle);
-        tvOverview = (TextView) findViewById(R.id.movieOverview);
-        rbVote = (RatingBar) findViewById(R.id.ratingBar);
-        // set data for tvGenres and tvDuration in populateMovieDataOnScreen method
-        tvGenres = (TextView) findViewById(R.id.genres);
-        tvDuration = (TextView) findViewById(R.id.duration);
-
-        tvTitle.setText(title.toString());
-        tvOverview.setText(overview.toString());
-        rbVote.setRating(Float.parseFloat(votes));
+        movieIntent = getIntent();
+        getIntents();
+        setTextViews();
+        setTextOnScreen();
 
         okClient = new OkHttpClient();
 
@@ -93,6 +82,30 @@ public class MovieInformationActivity extends AppCompatActivity {
 
         populateYoutubeOnScreen();
         populateMovieDataOnScreen();
+    }
+
+    private void setTextViews() {
+        tvTitle = (TextView) findViewById(R.id.movieTitle);
+        tvOverview = (TextView) findViewById(R.id.movieOverview);
+        rbVote = (RatingBar) findViewById(R.id.ratingBar);
+        // set data for tvGenres and tvDuration in populateMovieDataOnScreen method
+        tvGenres = (TextView) findViewById(R.id.genres);
+        tvDuration = (TextView) findViewById(R.id.duration);
+    }
+
+    private void getIntents() {
+        id = movieIntent.getStringExtra("id");
+        backdrop_path = movieIntent.getStringExtra("backdrop_path");
+        votes = movieIntent.getStringExtra("votes");
+        overview = movieIntent.getStringExtra("overview");
+        title = movieIntent.getStringExtra("title");
+    }
+
+    private void setTextOnScreen() {
+
+        tvTitle.setText(title.toString());
+        tvOverview.setText(overview.toString());
+        rbVote.setRating(Float.parseFloat(votes));
     }
 
     private void populateYoutubeOnScreen() {

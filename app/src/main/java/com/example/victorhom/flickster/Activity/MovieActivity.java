@@ -1,4 +1,4 @@
-package com.example.victorhom.flickster;
+package com.example.victorhom.flickster.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.victorhom.flickster.Adapter.MoviesArrayAdapter;
+import com.example.victorhom.flickster.R;
 import com.example.victorhom.flickster.models.Movie;
 
 import org.json.JSONArray;
